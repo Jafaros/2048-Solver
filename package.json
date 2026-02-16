@@ -1,0 +1,13 @@
+{
+	"name": "2048-solver",
+	"version": "0.1.0",
+	"private": true,
+	"type": "commonjs",
+	"scripts": {
+		"build": "tsc",
+		"start": "node dist/start.js"
+	},
+	"devDependencies": {
+		"typescript": "^5.5.4"
+	}
+}
