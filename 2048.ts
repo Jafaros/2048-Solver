@@ -218,9 +218,7 @@ export class Game2048 {
 			const emptyPositions = this.GetEmptyPositions();
 
 			if (emptyPositions.length > 0) {
-				const randomIndex = Math.floor(
-					Math.random() * emptyPositions.length,
-				);
+				const randomIndex = Math.floor(Math.random() * emptyPositions.length);
 				const [x, y] = emptyPositions[randomIndex];
 				this.grid[y][x] = this.GenerateNumber();
 			}
@@ -258,9 +256,7 @@ export class Game2048 {
 
 	// Generování počáteční mřížky s dvěma náhodnými čísly
 	public GenerateGrid = () => {
-		let randomPos: Position[] = this.GeneratePositionsForInitialNumbers(
-			this.size,
-		);
+		const randomPos: Position[] = this.GeneratePositionsForInitialNumbers(this.size);
 		randomPos.forEach((position) => {
 			const x = position[0];
 			const y = position[1];
@@ -269,14 +265,19 @@ export class Game2048 {
 	};
 
 	// Výstup do konzole aktuálního stavu mřížky do konzole
-	public PrintGrid = (grid: number[][]) => {
-		for (let i = 0; i < grid.length; i++) {
-			console.log(grid[i].join(' '));
+	public PrintGrid = () => {
+		for (let i = 0; i < this.grid.length; i++) {
+			console.log(this.grid[i].join(' '));
 		}
 	};
 
 	// Získání hrací mřížky
 	public GetGrid = (): number[][] => {
 		return this.grid;
+	};
+
+	// Získání aktuálního skóre (nejvyšší číslo na mřížce)
+	public GetScore = (): number => {
+		return Math.max(...this.grid.flat());
 	};
 }

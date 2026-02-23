@@ -4,6 +4,7 @@
 	"private": true,
 	"type": "commonjs",
 	"scripts": {
+		"prestart": "npm run build",
 		"build": "tsc",
 		"start": "node dist/start.js"
 	},
