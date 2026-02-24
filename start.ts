@@ -23,7 +23,7 @@ const LogResults = (testName: string, results: Array<TestResult>) => {
 
 // Spuštění všech testů a logování výsledků
 for (const test of tests) {
-	console.log(`Running test: ${test.name}`);
+	console.log(`Spouštím test: ${test.name}`);
 	const results: Array<TestResult> = [];
 
 	for (let i = 0; i < ITERATIONS; i++) {

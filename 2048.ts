@@ -1,5 +1,4 @@
-type Position = [number, number]; // Typ pro pozici na mřížce (x, y)
-export type Direction = 'up' | 'down' | 'left' | 'right'; // Typ pro směr pohybu
+import { Direction, Position } from './types';
 
 // Třída spravující logiku hry 2048
 export class Game2048 {
@@ -31,7 +30,7 @@ export class Game2048 {
 	// Generování náhodných pozic pro počáteční čísla
 	private GeneratePositionsForInitialNumbers = (size: number): Position[] => {
 		if (size * size < 2) {
-			throw new Error('Grid size must allow at least two positions.');
+			throw new Error('Velikost mřížky musí umožnit alespoň dvě pozice.');
 		}
 
 		const positions: Position[] = [];
@@ -140,7 +139,7 @@ export class Game2048 {
 				}
 				return false;
 			default:
-				throw new Error('Invalid direction');
+				throw new Error('Neplatný směr');
 		}
 	};
 
@@ -204,7 +203,7 @@ export class Game2048 {
 				}
 				break;
 			default:
-				throw new Error('Invalid direction');
+				throw new Error('Neplatný směr');
 		}
 
 		return moved;

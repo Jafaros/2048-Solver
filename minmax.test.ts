@@ -1,12 +1,15 @@
 import { Game2048 } from './2048';
 import { ITest, type Direction } from './types';
 
-export class RandomTest implements ITest {
-	name: string = 'RandomTest';
+export class MinMaxTest implements ITest {
+	name: string = 'MinMaxTest';
 	game: Game2048 | null = null;
 	moves_count: number = 0;
 
-	constructor(private grid_size: number) {
+	constructor(
+		private grid_size: number,
+		private max_depth: number = 3
+	) {
 		this.InitiateGame();
 		console.log(`${this.name} vytvořen`);
 	}
@@ -24,12 +27,24 @@ export class RandomTest implements ITest {
 			return { success: false, message: 'Hra nebyla inicializována' };
 		}
 
-		const valid_moves: Array<Direction> = ['up', 'right', 'down', 'left'];
-
+		// Implementace logiky pro tahy, které se snaží udržet nejvyšší hodnotu v rohu
 		let status = true;
 		while (status) {
-			const random_move = valid_moves[Math.floor(Math.random() * valid_moves.length)];
-			this.game.Move(random_move, () => {
+			const possibleMoves: Array<Direction> = ['up', 'down', 'left', 'right'];
+			const move = possibleMoves.find((direction) => this.game!.CanMove(direction));
+
+			if (!move) {
+				// this.game.PrintGrid();
+
+				return {
+					success: false,
+					message: `${this.name} skončil`,
+					score: this.game.GetScore(),
+					moves_count: this.moves_count
+				};
+			}
+
+			this.game.Move(move, () => {
 				// console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
 				status = false;
 			});

@@ -1,13 +1,14 @@
-import { Game2048, type Direction } from './2048';
-import { ITest } from './types';
+import { Game2048 } from './2048';
+import { ITest, type Direction } from './types';
 
 export class CornerTest implements ITest {
 	name: string = 'CornerTest';
 	game: Game2048 | null = null;
 	moves_count: number = 0;
+
 	constructor(private grid_size: number) {
 		this.InitiateGame();
-		console.log('CornerTest created');
+		console.log(`${this.name} vytvořen`);
 	}
 
 	InitiateGame() {
@@ -19,8 +20,8 @@ export class CornerTest implements ITest {
 		this.moves_count = 0; // Reset počtu tahů pro každý běh testu
 
 		if (!this.game) {
-			console.error('Game not initialized');
-			return { success: false, message: 'Game not initialized' };
+			console.error('Hra nebyla inicializována');
+			return { success: false, message: 'Hra nebyla inicializována' };
 		}
 
 		// Implementace logiky pro tahy, které se snaží udržet nejvyšší hodnotu v rohu
@@ -37,14 +38,14 @@ export class CornerTest implements ITest {
 
 				return {
 					success: false,
-					message: 'Game over',
+					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
 					moves_count: this.moves_count
 				};
 			}
 
 			this.game.Move(move, () => {
-				// console.log(`Game Over! Score: ${this.game?.GetScore()}`);
+				// console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
 				status = false;
 			});
 
@@ -55,7 +56,7 @@ export class CornerTest implements ITest {
 
 				return {
 					success: false,
-					message: 'Game over',
+					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
 					moves_count: this.moves_count
 				};
@@ -64,7 +65,7 @@ export class CornerTest implements ITest {
 
 		return {
 			success: true,
-			message: 'Corner test completed',
+			message: `${this.name} dokončen`,
 			score: this.game.GetScore(),
 			moves_count: this.moves_count
 		};
