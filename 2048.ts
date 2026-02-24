@@ -266,9 +266,24 @@ export class Game2048 {
 
 	// Výstup do konzole aktuálního stavu mřížky do konzole
 	public PrintGrid = () => {
+		const maxDigits = Math.max(1, ...this.grid.flat().map((value) => value.toString().length));
+		const cellWidth = maxDigits + 2;
+		const horizontalBorder =
+			'+' +
+			Array(this.size)
+				.fill('-'.repeat(cellWidth + 2))
+				.join('+') +
+			'+';
+
 		for (let i = 0; i < this.grid.length; i++) {
-			console.log(this.grid[i].join(' '));
+			console.log(horizontalBorder);
+			const formattedRow = this.grid[i]
+				.map((value) => ` ${value.toString().padStart(cellWidth, ' ')} `)
+				.join('|');
+			console.log(`|${formattedRow}|`);
 		}
+
+		console.log(horizontalBorder);
 	};
 
 	// Získání hrací mřížky
