@@ -244,6 +244,21 @@ class Game2048 {
         this.GetGrid = () => {
             return this.grid;
         };
+        // Nastavení hrací mřížky (používá se pro testování s předdefinovanými stavy)
+        this.SetGrid = (newGrid) => {
+            if (newGrid.length !== this.size || newGrid.some((row) => row.length !== this.size)) {
+                throw new Error('Nová mřížka musí mít stejnou velikost jako původní.');
+            }
+            this.grid = newGrid;
+        };
+        // Nastavení konkrétní hodnoty na danou pozici (používá se pro testování s předdefinovanými stavy)
+        this.SetValueOnPosition = (position, value) => {
+            const [x, y] = position;
+            if (x < 0 || x >= this.size || y < 0 || y >= this.size) {
+                throw new Error('Pozice je mimo hranice mřížky.');
+            }
+            this.grid[y][x] = value;
+        };
         // Získání aktuálního skóre (nejvyšší číslo na mřížce)
         this.GetScore = () => {
             return Math.max(...this.grid.flat());

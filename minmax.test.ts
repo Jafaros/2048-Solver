@@ -1,5 +1,6 @@
 import { Game2048 } from './2048';
-import { ITest, type Direction } from './types';
+import { BuildTree, PrintTree } from './tree-helper';
+import { ITest } from './types';
 
 export class MinMaxTest implements ITest {
 	name: string = 'MinMaxTest';
@@ -27,29 +28,14 @@ export class MinMaxTest implements ITest {
 			return { success: false, message: 'Hra nebyla inicializována' };
 		}
 
-		// Implementace logiky pro tahy, které se snaží udržet nejvyšší hodnotu v rohu
 		let status = true;
 		while (status) {
-			const possibleMoves: Array<Direction> = ['up', 'down', 'left', 'right'];
-			const move = possibleMoves.find((direction) => this.game!.CanMove(direction));
-
-			if (!move) {
-				// this.game.PrintGrid();
-
-				return {
-					success: false,
-					message: `${this.name} skončil`,
-					score: this.game.GetScore(),
-					moves_count: this.moves_count
-				};
-			}
-
-			this.game.Move(move, () => {
-				// console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
-				status = false;
-			});
+			const tree = BuildTree(this.game, this.max_depth);
+			PrintTree(tree.head!, '|');
 
 			this.moves_count++;
+
+			status = false;
 
 			if (!status) {
 				// this.game.PrintGrid();

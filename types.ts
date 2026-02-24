@@ -1,5 +1,6 @@
 import { Game2048 } from './2048';
 
+export type Grid = number[][]; // Typ pro hrací mřížku
 export type Position = [number, number]; // Typ pro pozici na mřížce (x, y)
 export type Direction = 'up' | 'down' | 'left' | 'right'; // Typ pro směr pohybu
 
@@ -20,14 +21,38 @@ export interface ITest {
 	InitiateGame(): void;
 }
 
-// Typ pro větev stromu možností pro minmax algoritmus
-export type LinkedTreeNode = {
-	value: number;
-	next: Array<LinkedTreeNode>;
+export type SpawnOutcome = {
+	x: number;
+	y: number;
+	value: 2 | 4;
+	p: number;
 };
 
-// Typ pro strom možností pro minmax algoritmus
-export type LinkedTree = {
-	head: LinkedTreeNode | null;
+export type BaseNode = {
+	grid: Grid;
+	gameScore?: number;
+	utility?: number;
+	depth: number;
+};
+
+export type PlayerNode = BaseNode & {
+	kind: 'PLAYER';
+	nodeValue?: number;
+	children: Partial<Record<Direction, ChanceNode | null>>;
+};
+
+export type ChanceNode = BaseNode & {
+	kind: 'CHANCE';
+	causedByMove: Direction;
+	outcomes: Array<{
+		spawn: SpawnOutcome;
+		next: PlayerNode | null;
+	}>;
+};
+
+export type Tree = {
+	head: PlayerNode | null;
+	game: Game2048;
 	size: number;
+	maxDepth: number;
 };

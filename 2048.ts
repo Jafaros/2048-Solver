@@ -1,8 +1,8 @@
-import { Direction, Position } from './types';
+import { Direction, Grid, Position } from './types';
 
 // Třída spravující logiku hry 2048
 export class Game2048 {
-	private grid: number[][];
+	private grid: Grid;
 
 	// Konstruktor pro inicializaci prázdné mřížky
 	constructor(private size: number) {
@@ -239,7 +239,7 @@ export class Game2048 {
 	};
 
 	// Získání všech prázdných pozic na mřížce pro přidání nového čísla
-	private GetEmptyPositions = (): Position[] => {
+	public GetEmptyPositions = (): Position[] => {
 		const emptyPositions: Position[] = [];
 
 		for (let i = 0; i < this.size; i++) {
@@ -286,8 +286,27 @@ export class Game2048 {
 	};
 
 	// Získání hrací mřížky
-	public GetGrid = (): number[][] => {
+	public GetGrid = (): Grid => {
 		return this.grid;
+	};
+
+	// Nastavení hrací mřížky (používá se pro testování s předdefinovanými stavy)
+	public SetGrid = (newGrid: Grid) => {
+		if (newGrid.length !== this.size || newGrid.some((row) => row.length !== this.size)) {
+			throw new Error('Nová mřížka musí mít stejnou velikost jako původní.');
+		}
+
+		this.grid = newGrid;
+	};
+
+	// Nastavení konkrétní hodnoty na danou pozici (používá se pro testování s předdefinovanými stavy)
+	public SetValueOnPosition = (position: Position, value: number) => {
+		const [x, y] = position;
+		if (x < 0 || x >= this.size || y < 0 || y >= this.size) {
+			throw new Error('Pozice je mimo hranice mřížky.');
+		}
+
+		this.grid[y][x] = value;
 	};
 
 	// Získání aktuálního skóre (nejvyšší číslo na mřížce)

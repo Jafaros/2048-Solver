@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MinMaxTest = void 0;
 const _2048_1 = require("./2048");
+const tree_helper_1 = require("./tree-helper");
 class MinMaxTest {
     constructor(grid_size, max_depth = 3) {
         this.grid_size = grid_size;
@@ -22,25 +23,12 @@ class MinMaxTest {
             console.error('Hra nebyla inicializována');
             return { success: false, message: 'Hra nebyla inicializována' };
         }
-        // Implementace logiky pro tahy, které se snaží udržet nejvyšší hodnotu v rohu
         let status = true;
         while (status) {
-            const possibleMoves = ['up', 'down', 'left', 'right'];
-            const move = possibleMoves.find((direction) => this.game.CanMove(direction));
-            if (!move) {
-                // this.game.PrintGrid();
-                return {
-                    success: false,
-                    message: `${this.name} skončil`,
-                    score: this.game.GetScore(),
-                    moves_count: this.moves_count
-                };
-            }
-            this.game.Move(move, () => {
-                // console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
-                status = false;
-            });
+            const tree = (0, tree_helper_1.BuildTree)(this.game, this.max_depth);
+            (0, tree_helper_1.PrintTree)(tree.head, '|');
             this.moves_count++;
+            status = false;
             if (!status) {
                 // this.game.PrintGrid();
                 return {
