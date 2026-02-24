@@ -19,7 +19,7 @@ const LogResults = (testName, results) => {
 };
 // Spuštění všech testů a logování výsledků
 for (const test of tests_1.tests) {
-    console.log(`Running test: ${test.name}`);
+    console.log(`Spouštím test: ${test.name}`);
     const results = [];
     for (let i = 0; i < ITERATIONS; i++) {
         const result = test.Run();

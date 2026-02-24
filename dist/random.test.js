@@ -8,9 +8,8 @@ class RandomTest {
         this.name = 'RandomTest';
         this.game = null;
         this.moves_count = 0;
-        this.valid_moves = ['up', 'right', 'down', 'left'];
         this.InitiateGame();
-        console.log('RandomTest created');
+        console.log(`${this.name} vytvořen`);
     }
     InitiateGame() {
         this.game = new _2048_1.Game2048(this.grid_size);
@@ -19,14 +18,15 @@ class RandomTest {
     Run() {
         this.moves_count = 0; // Reset počtu tahů pro každý běh testu
         if (!this.game) {
-            console.error('Game not initialized');
-            return { success: false, message: 'Game not initialized' };
+            console.error('Hra nebyla inicializována');
+            return { success: false, message: 'Hra nebyla inicializována' };
         }
+        const valid_moves = ['up', 'right', 'down', 'left'];
         let status = true;
         while (status) {
-            const random_move = this.valid_moves[Math.floor(Math.random() * this.valid_moves.length)];
+            const random_move = valid_moves[Math.floor(Math.random() * valid_moves.length)];
             this.game.Move(random_move, () => {
-                // console.log(`Game Over! Score: ${this.game?.GetScore()}`);
+                // console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
                 status = false;
             });
             this.moves_count++;
@@ -34,7 +34,7 @@ class RandomTest {
                 // this.game.PrintGrid();
                 return {
                     success: false,
-                    message: 'Game over',
+                    message: `${this.name} skončil`,
                     score: this.game.GetScore(),
                     moves_count: this.moves_count
                 };
@@ -42,7 +42,7 @@ class RandomTest {
         }
         return {
             success: true,
-            message: 'Random test completed',
+            message: `${this.name} dokončen`,
             score: this.game.GetScore(),
             moves_count: this.moves_count
         };

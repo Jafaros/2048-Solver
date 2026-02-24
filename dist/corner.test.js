@@ -9,7 +9,7 @@ class CornerTest {
         this.game = null;
         this.moves_count = 0;
         this.InitiateGame();
-        console.log('CornerTest created');
+        console.log(`${this.name} vytvořen`);
     }
     InitiateGame() {
         this.game = new _2048_1.Game2048(this.grid_size);
@@ -18,8 +18,8 @@ class CornerTest {
     Run() {
         this.moves_count = 0; // Reset počtu tahů pro každý běh testu
         if (!this.game) {
-            console.error('Game not initialized');
-            return { success: false, message: 'Game not initialized' };
+            console.error('Hra nebyla inicializována');
+            return { success: false, message: 'Hra nebyla inicializována' };
         }
         // Implementace logiky pro tahy, které se snaží udržet nejvyšší hodnotu v rohu
         let status = true;
@@ -31,13 +31,13 @@ class CornerTest {
                 // this.game.PrintGrid();
                 return {
                     success: false,
-                    message: 'Game over',
+                    message: `${this.name} skončil`,
                     score: this.game.GetScore(),
                     moves_count: this.moves_count
                 };
             }
             this.game.Move(move, () => {
-                // console.log(`Game Over! Score: ${this.game?.GetScore()}`);
+                // console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
                 status = false;
             });
             this.moves_count++;
@@ -45,7 +45,7 @@ class CornerTest {
                 // this.game.PrintGrid();
                 return {
                     success: false,
-                    message: 'Game over',
+                    message: `${this.name} skončil`,
                     score: this.game.GetScore(),
                     moves_count: this.moves_count
                 };
@@ -53,7 +53,7 @@ class CornerTest {
         }
         return {
             success: true,
-            message: 'Corner test completed',
+            message: `${this.name} dokončen`,
             score: this.game.GetScore(),
             moves_count: this.moves_count
         };

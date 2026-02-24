@@ -19,7 +19,7 @@ class Game2048 {
         // Generování náhodných pozic pro počáteční čísla
         this.GeneratePositionsForInitialNumbers = (size) => {
             if (size * size < 2) {
-                throw new Error('Grid size must allow at least two positions.');
+                throw new Error('Velikost mřížky musí umožnit alespoň dvě pozice.');
             }
             const positions = [];
             const seen = new Set();
@@ -115,7 +115,7 @@ class Game2048 {
                     }
                     return false;
                 default:
-                    throw new Error('Invalid direction');
+                    throw new Error('Neplatný směr');
             }
         };
         // Pokus o provedení tahu v daném směru, vrací true pokud se něco změnilo
@@ -175,7 +175,7 @@ class Game2048 {
                     }
                     break;
                 default:
-                    throw new Error('Invalid direction');
+                    throw new Error('Neplatný směr');
             }
             return moved;
         };
