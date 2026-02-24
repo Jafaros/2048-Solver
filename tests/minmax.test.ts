@@ -1,6 +1,6 @@
-import { Game2048 } from './2048';
-import { AssignNodeValues, BuildTree, GetBestMove } from './tree-helper';
-import { ITest } from './types';
+import { Game2048 } from '../2048';
+import { AssignNodeValues, BuildTree, GetBestMove } from '../utils/tree-helper';
+import { ITest } from '../types';
 
 export class MinMaxTest implements ITest {
 	name: string = 'MinMaxTest';
@@ -9,7 +9,7 @@ export class MinMaxTest implements ITest {
 
 	constructor(
 		private grid_size: number,
-		private max_depth: number = 3
+		private max_depth: number = 3,
 	) {
 		this.InitiateGame();
 		console.log(`${this.name} vytvořen`);
@@ -18,6 +18,23 @@ export class MinMaxTest implements ITest {
 	InitiateGame() {
 		this.game = new Game2048(this.grid_size);
 		this.game.GenerateGrid();
+	}
+
+	private GetEffectiveDepth(): number {
+		if (!this.game) {
+			return this.max_depth;
+		}
+
+		const emptyCount = this.game.GetEmptyPositions().length;
+		if (emptyCount >= 8) {
+			return Math.max(2, this.max_depth - 2);
+		}
+
+		if (emptyCount >= 5) {
+			return Math.max(2, this.max_depth - 1);
+		}
+
+		return this.max_depth;
 	}
 
 	Run() {
@@ -30,38 +47,32 @@ export class MinMaxTest implements ITest {
 
 		let status = true;
 		while (status) {
-			const gameInstance = new Game2048(this.grid_size);
-			gameInstance.SetGrid(this.game.GetGrid());
-			const tree = BuildTree(gameInstance, this.max_depth);
+			const depth = this.GetEffectiveDepth();
+			const tree = BuildTree(this.game, depth);
 
 			if (tree.head) AssignNodeValues(tree.head);
 
 			const move = GetBestMove(tree);
 			if (!move) {
-				// this.game.PrintGrid();
-
 				return {
 					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
-					moves_count: this.moves_count
+					moves_count: this.moves_count,
 				};
 			}
 
 			this.game.Move(move, () => {
-				// console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
 				status = false;
 			});
 			this.moves_count++;
 
 			if (!status) {
-				// this.game.PrintGrid();
-
 				return {
 					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
-					moves_count: this.moves_count
+					moves_count: this.moves_count,
 				};
 			}
 		}
@@ -70,7 +81,7 @@ export class MinMaxTest implements ITest {
 			success: this.game.HasWon(),
 			message: `${this.name} dokončen`,
 			score: this.game.GetScore(),
-			moves_count: this.moves_count
+			moves_count: this.moves_count,
 		};
 	}
 }

@@ -21,23 +21,27 @@ export interface ITest {
 	InitiateGame(): void;
 }
 
+// Typ pro výsledek spawnu nového čísla na hrací mřížce
 export type SpawnOutcome = {
 	x: number;
 	y: number;
 	value: 2 | 4;
 };
 
+// Základní node pro strom
 export type BaseNode = {
 	grid: Grid;
 	depth: number;
 };
 
+// Node pro tah hráče
 export type PlayerNode = BaseNode & {
 	kind: 'PLAYER';
 	value?: number;
 	children: Partial<Record<Direction, ChanceNode | null>>;
 };
 
+// Node pro náhodný spawn čísla
 export type ChanceNode = BaseNode & {
 	kind: 'CHANCE';
 	value?: number;
@@ -48,6 +52,7 @@ export type ChanceNode = BaseNode & {
 	}>;
 };
 
+// Typ pro MinMax strom
 export type Tree = {
 	head: PlayerNode | null;
 	game: Game2048;

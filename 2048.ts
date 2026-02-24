@@ -1,4 +1,5 @@
 import { Direction, Grid, Position } from './types';
+import { ProcessLine, ArraysEqual } from './utils/grid-utils';
 
 // Třída spravující logiku hry 2048
 export class Game2048 {
@@ -19,12 +20,7 @@ export class Game2048 {
 	// Generování náhodného čísla (2 nebo 4) pro nové pole s poměrem 9:1
 	private GenerateNumber = (): number => {
 		const rand = Math.round(Math.random() * 10) % 10;
-
-		if (rand < 9) {
-			return 2;
-		} else {
-			return 4;
-		}
+		return rand < 9 ? 2 : 4;
 	};
 
 	// Generování náhodných pozic pro počáteční čísla
@@ -52,51 +48,15 @@ export class Game2048 {
 		return positions;
 	};
 
-	// Pomocná metoda pro porovnání dvou polí abychom zjistil, jestli se změnila po zpracování
-	private ArraysEqual = (a: number[], b: number[]): boolean => {
-		if (a.length !== b.length) {
-			return false;
-		}
-		for (let i = 0; i < a.length; i++) {
-			if (a[i] !== b[i]) {
-				return false;
-			}
-		}
-		return true;
-	};
-
-	// Zpracování jednoho řádku nebo sloupce pro posun a sloučení čísel
-	private ProcessLine = (line: number[]): number[] => {
-		const filtered = line.filter((value) => value !== 0);
-		const merged: number[] = [];
-
-		for (let i = 0; i < filtered.length; i++) {
-			const current = filtered[i];
-			const next = filtered[i + 1];
-
-			if (current !== 0 && current === next) {
-				merged.push(current * 2);
-				i++;
-			} else {
-				merged.push(current);
-			}
-		}
-
-		while (merged.length < this.size) {
-			merged.push(0);
-		}
-
-		return merged;
-	};
-
 	// Kontrola, jestli je možné provést tah v daném směru
 	public CanMove = (direction: Direction): boolean => {
 		switch (direction) {
 			case 'left':
 				for (let row = 0; row < this.size; row++) {
 					const original = this.grid[row];
-					const updated = this.ProcessLine(original);
-					if (!this.ArraysEqual(original, updated)) {
+					const updated = ProcessLine(original, this.size);
+
+					if (!ArraysEqual(original, updated)) {
 						return true;
 					}
 				}
@@ -105,8 +65,9 @@ export class Game2048 {
 				for (let row = 0; row < this.size; row++) {
 					const original = this.grid[row];
 					const reversed = [...original].reverse();
-					const updated = this.ProcessLine(reversed).reverse();
-					if (!this.ArraysEqual(original, updated)) {
+					const updated = ProcessLine(reversed, this.size).reverse();
+
+					if (!ArraysEqual(original, updated)) {
 						return true;
 					}
 				}
@@ -114,12 +75,14 @@ export class Game2048 {
 			case 'up':
 				for (let col = 0; col < this.size; col++) {
 					const original: number[] = [];
+
 					for (let row = 0; row < this.size; row++) {
 						original.push(this.grid[row][col]);
 					}
 
-					const updated = this.ProcessLine(original);
-					if (!this.ArraysEqual(original, updated)) {
+					const updated = ProcessLine(original, this.size);
+
+					if (!ArraysEqual(original, updated)) {
 						return true;
 					}
 				}
@@ -127,13 +90,15 @@ export class Game2048 {
 			case 'down':
 				for (let col = 0; col < this.size; col++) {
 					const original: number[] = [];
+
 					for (let row = 0; row < this.size; row++) {
 						original.push(this.grid[row][col]);
 					}
 
 					const reversed = [...original].reverse();
-					const updated = this.ProcessLine(reversed).reverse();
-					if (!this.ArraysEqual(original, updated)) {
+					const updated = ProcessLine(reversed, this.size).reverse();
+
+					if (!ArraysEqual(original, updated)) {
 						return true;
 					}
 				}
@@ -151,8 +116,9 @@ export class Game2048 {
 			case 'left':
 				for (let row = 0; row < this.size; row++) {
 					const original = this.grid[row];
-					const updated = this.ProcessLine(original);
-					if (!this.ArraysEqual(original, updated)) {
+					const updated = ProcessLine(original, this.size);
+
+					if (!ArraysEqual(original, updated)) {
 						moved = true;
 						this.grid[row] = updated;
 					}
@@ -162,8 +128,9 @@ export class Game2048 {
 				for (let row = 0; row < this.size; row++) {
 					const original = this.grid[row];
 					const reversed = [...original].reverse();
-					const updated = this.ProcessLine(reversed).reverse();
-					if (!this.ArraysEqual(original, updated)) {
+					const updated = ProcessLine(reversed, this.size).reverse();
+
+					if (!ArraysEqual(original, updated)) {
 						moved = true;
 						this.grid[row] = updated;
 					}
@@ -172,13 +139,16 @@ export class Game2048 {
 			case 'up':
 				for (let col = 0; col < this.size; col++) {
 					const original: number[] = [];
+
 					for (let row = 0; row < this.size; row++) {
 						original.push(this.grid[row][col]);
 					}
 
-					const updated = this.ProcessLine(original);
-					if (!this.ArraysEqual(original, updated)) {
+					const updated = ProcessLine(original, this.size);
+
+					if (!ArraysEqual(original, updated)) {
 						moved = true;
+
 						for (let row = 0; row < this.size; row++) {
 							this.grid[row][col] = updated[row];
 						}
@@ -188,14 +158,17 @@ export class Game2048 {
 			case 'down':
 				for (let col = 0; col < this.size; col++) {
 					const original: number[] = [];
+
 					for (let row = 0; row < this.size; row++) {
 						original.push(this.grid[row][col]);
 					}
 
 					const reversed = [...original].reverse();
-					const updated = this.ProcessLine(reversed).reverse();
-					if (!this.ArraysEqual(original, updated)) {
+					const updated = ProcessLine(reversed, this.size).reverse();
+
+					if (!ArraysEqual(original, updated)) {
 						moved = true;
+
 						for (let row = 0; row < this.size; row++) {
 							this.grid[row][col] = updated[row];
 						}
@@ -217,7 +190,10 @@ export class Game2048 {
 			const emptyPositions = this.GetEmptyPositions();
 
 			if (emptyPositions.length > 0) {
-				const randomIndex = Math.floor(Math.random() * emptyPositions.length);
+				const randomIndex = Math.floor(
+					Math.random() * emptyPositions.length,
+				);
+
 				const [x, y] = emptyPositions[randomIndex];
 				this.grid[y][x] = this.GenerateNumber();
 			}
@@ -260,7 +236,9 @@ export class Game2048 {
 
 	// Generování počáteční mřížky s dvěma náhodnými čísly
 	public GenerateGrid = () => {
-		const randomPos: Position[] = this.GeneratePositionsForInitialNumbers(this.size);
+		const randomPos: Position[] = this.GeneratePositionsForInitialNumbers(
+			this.size,
+		);
 		randomPos.forEach((position) => {
 			const x = position[0];
 			const y = position[1];
@@ -270,7 +248,10 @@ export class Game2048 {
 
 	// Výstup do konzole aktuálního stavu mřížky do konzole
 	public PrintGrid = () => {
-		const maxDigits = Math.max(1, ...this.grid.flat().map((value) => value.toString().length));
+		const maxDigits = Math.max(
+			1,
+			...this.grid.flat().map((value) => value.toString().length),
+		);
 		const cellWidth = maxDigits + 2;
 		const horizontalBorder =
 			'+' +
@@ -282,7 +263,9 @@ export class Game2048 {
 		for (let i = 0; i < this.grid.length; i++) {
 			console.log(horizontalBorder);
 			const formattedRow = this.grid[i]
-				.map((value) => ` ${value.toString().padStart(cellWidth, ' ')} `)
+				.map(
+					(value) => ` ${value.toString().padStart(cellWidth, ' ')} `,
+				)
 				.join('|');
 			console.log(`|${formattedRow}|`);
 		}
@@ -297,8 +280,13 @@ export class Game2048 {
 
 	// Nastavení hrací mřížky (používá se pro testování s předdefinovanými stavy)
 	public SetGrid = (newGrid: Grid) => {
-		if (newGrid.length !== this.size || newGrid.some((row) => row.length !== this.size)) {
-			throw new Error('Nová mřížka musí mít stejnou velikost jako původní.');
+		if (
+			newGrid.length !== this.size ||
+			newGrid.some((row) => row.length !== this.size)
+		) {
+			throw new Error(
+				'Nová mřížka musí mít stejnou velikost jako původní.',
+			);
 		}
 
 		this.grid = newGrid;

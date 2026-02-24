@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Game2048 = void 0;
+const grid_utils_1 = require("./utils/grid-utils");
 // Třída spravující logiku hry 2048
 class Game2048 {
     // Konstruktor pro inicializaci prázdné mřížky
@@ -9,12 +10,7 @@ class Game2048 {
         // Generování náhodného čísla (2 nebo 4) pro nové pole s poměrem 9:1
         this.GenerateNumber = () => {
             const rand = Math.round(Math.random() * 10) % 10;
-            if (rand < 9) {
-                return 2;
-            }
-            else {
-                return 4;
-            }
+            return rand < 9 ? 2 : 4;
         };
         // Generování náhodných pozic pro počáteční čísla
         this.GeneratePositionsForInitialNumbers = (size) => {
@@ -35,46 +31,14 @@ class Game2048 {
             }
             return positions;
         };
-        // Pomocná metoda pro porovnání dvou polí abychom zjistil, jestli se změnila po zpracování
-        this.ArraysEqual = (a, b) => {
-            if (a.length !== b.length) {
-                return false;
-            }
-            for (let i = 0; i < a.length; i++) {
-                if (a[i] !== b[i]) {
-                    return false;
-                }
-            }
-            return true;
-        };
-        // Zpracování jednoho řádku nebo sloupce pro posun a sloučení čísel
-        this.ProcessLine = (line) => {
-            const filtered = line.filter((value) => value !== 0);
-            const merged = [];
-            for (let i = 0; i < filtered.length; i++) {
-                const current = filtered[i];
-                const next = filtered[i + 1];
-                if (current !== 0 && current === next) {
-                    merged.push(current * 2);
-                    i++;
-                }
-                else {
-                    merged.push(current);
-                }
-            }
-            while (merged.length < this.size) {
-                merged.push(0);
-            }
-            return merged;
-        };
         // Kontrola, jestli je možné provést tah v daném směru
         this.CanMove = (direction) => {
             switch (direction) {
                 case 'left':
                     for (let row = 0; row < this.size; row++) {
                         const original = this.grid[row];
-                        const updated = this.ProcessLine(original);
-                        if (!this.ArraysEqual(original, updated)) {
+                        const updated = (0, grid_utils_1.ProcessLine)(original, this.size);
+                        if (!(0, grid_utils_1.ArraysEqual)(original, updated)) {
                             return true;
                         }
                     }
@@ -83,8 +47,8 @@ class Game2048 {
                     for (let row = 0; row < this.size; row++) {
                         const original = this.grid[row];
                         const reversed = [...original].reverse();
-                        const updated = this.ProcessLine(reversed).reverse();
-                        if (!this.ArraysEqual(original, updated)) {
+                        const updated = (0, grid_utils_1.ProcessLine)(reversed, this.size).reverse();
+                        if (!(0, grid_utils_1.ArraysEqual)(original, updated)) {
                             return true;
                         }
                     }
@@ -95,8 +59,8 @@ class Game2048 {
                         for (let row = 0; row < this.size; row++) {
                             original.push(this.grid[row][col]);
                         }
-                        const updated = this.ProcessLine(original);
-                        if (!this.ArraysEqual(original, updated)) {
+                        const updated = (0, grid_utils_1.ProcessLine)(original, this.size);
+                        if (!(0, grid_utils_1.ArraysEqual)(original, updated)) {
                             return true;
                         }
                     }
@@ -108,8 +72,8 @@ class Game2048 {
                             original.push(this.grid[row][col]);
                         }
                         const reversed = [...original].reverse();
-                        const updated = this.ProcessLine(reversed).reverse();
-                        if (!this.ArraysEqual(original, updated)) {
+                        const updated = (0, grid_utils_1.ProcessLine)(reversed, this.size).reverse();
+                        if (!(0, grid_utils_1.ArraysEqual)(original, updated)) {
                             return true;
                         }
                     }
@@ -125,8 +89,8 @@ class Game2048 {
                 case 'left':
                     for (let row = 0; row < this.size; row++) {
                         const original = this.grid[row];
-                        const updated = this.ProcessLine(original);
-                        if (!this.ArraysEqual(original, updated)) {
+                        const updated = (0, grid_utils_1.ProcessLine)(original, this.size);
+                        if (!(0, grid_utils_1.ArraysEqual)(original, updated)) {
                             moved = true;
                             this.grid[row] = updated;
                         }
@@ -136,8 +100,8 @@ class Game2048 {
                     for (let row = 0; row < this.size; row++) {
                         const original = this.grid[row];
                         const reversed = [...original].reverse();
-                        const updated = this.ProcessLine(reversed).reverse();
-                        if (!this.ArraysEqual(original, updated)) {
+                        const updated = (0, grid_utils_1.ProcessLine)(reversed, this.size).reverse();
+                        if (!(0, grid_utils_1.ArraysEqual)(original, updated)) {
                             moved = true;
                             this.grid[row] = updated;
                         }
@@ -149,8 +113,8 @@ class Game2048 {
                         for (let row = 0; row < this.size; row++) {
                             original.push(this.grid[row][col]);
                         }
-                        const updated = this.ProcessLine(original);
-                        if (!this.ArraysEqual(original, updated)) {
+                        const updated = (0, grid_utils_1.ProcessLine)(original, this.size);
+                        if (!(0, grid_utils_1.ArraysEqual)(original, updated)) {
                             moved = true;
                             for (let row = 0; row < this.size; row++) {
                                 this.grid[row][col] = updated[row];
@@ -165,8 +129,8 @@ class Game2048 {
                             original.push(this.grid[row][col]);
                         }
                         const reversed = [...original].reverse();
-                        const updated = this.ProcessLine(reversed).reverse();
-                        if (!this.ArraysEqual(original, updated)) {
+                        const updated = (0, grid_utils_1.ProcessLine)(reversed, this.size).reverse();
+                        if (!(0, grid_utils_1.ArraysEqual)(original, updated)) {
                             moved = true;
                             for (let row = 0; row < this.size; row++) {
                                 this.grid[row][col] = updated[row];
@@ -250,7 +214,8 @@ class Game2048 {
         };
         // Nastavení hrací mřížky (používá se pro testování s předdefinovanými stavy)
         this.SetGrid = (newGrid) => {
-            if (newGrid.length !== this.size || newGrid.some((row) => row.length !== this.size)) {
+            if (newGrid.length !== this.size ||
+                newGrid.some((row) => row.length !== this.size)) {
                 throw new Error('Nová mřížka musí mít stejnou velikost jako původní.');
             }
             this.grid = newGrid;

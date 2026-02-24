@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RandomTest = void 0;
-const _2048_1 = require("./2048");
+const _2048_1 = require("../2048");
 class RandomTest {
     constructor(grid_size) {
         this.grid_size = grid_size;
@@ -26,17 +26,15 @@ class RandomTest {
         while (status) {
             const random_move = valid_moves[Math.floor(Math.random() * valid_moves.length)];
             this.game.Move(random_move, () => {
-                // console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
                 status = false;
             });
             this.moves_count++;
             if (!status) {
-                // this.game.PrintGrid();
                 return {
                     success: this.game.HasWon(),
                     message: `${this.name} skončil`,
                     score: this.game.GetScore(),
-                    moves_count: this.moves_count
+                    moves_count: this.moves_count,
                 };
             }
         }
@@ -44,7 +42,7 @@ class RandomTest {
             success: this.game.HasWon(),
             message: `${this.name} dokončen`,
             score: this.game.GetScore(),
-            moves_count: this.moves_count
+            moves_count: this.moves_count,
         };
     }
 }

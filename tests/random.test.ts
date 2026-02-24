@@ -1,5 +1,5 @@
-import { Game2048 } from './2048';
-import { ITest, type Direction } from './types';
+import { Game2048 } from '../2048';
+import { ITest, type Direction } from '../types';
 
 export class RandomTest implements ITest {
 	name: string = 'RandomTest';
@@ -28,22 +28,20 @@ export class RandomTest implements ITest {
 
 		let status = true;
 		while (status) {
-			const random_move = valid_moves[Math.floor(Math.random() * valid_moves.length)];
+			const random_move =
+				valid_moves[Math.floor(Math.random() * valid_moves.length)];
 			this.game.Move(random_move, () => {
-				// console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
 				status = false;
 			});
 
 			this.moves_count++;
 
 			if (!status) {
-				// this.game.PrintGrid();
-
 				return {
 					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
-					moves_count: this.moves_count
+					moves_count: this.moves_count,
 				};
 			}
 		}
@@ -52,7 +50,7 @@ export class RandomTest implements ITest {
 			success: this.game.HasWon(),
 			message: `${this.name} dokončen`,
 			score: this.game.GetScore(),
-			moves_count: this.moves_count
+			moves_count: this.moves_count,
 		};
 	}
 }

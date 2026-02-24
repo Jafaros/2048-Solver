@@ -1,5 +1,5 @@
-import { Game2048 } from './2048';
-import { ITest, type Direction } from './types';
+import { Game2048 } from '../2048';
+import { ITest, type Direction } from '../types';
 
 export class CornerTest implements ITest {
 	name: string = 'CornerTest';
@@ -29,36 +29,31 @@ export class CornerTest implements ITest {
 		while (status) {
 			const preferredMoves: Array<Direction> = ['down', 'right'];
 			const fallbackMoves: Array<Direction> = ['up', 'left'];
-			const move = [...preferredMoves, ...fallbackMoves].find((direction) =>
-				this.game!.CanMove(direction)
+			const move = [...preferredMoves, ...fallbackMoves].find(
+				(direction) => this.game!.CanMove(direction),
 			);
 
 			if (!move) {
-				// this.game.PrintGrid();
-
 				return {
 					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
-					moves_count: this.moves_count
+					moves_count: this.moves_count,
 				};
 			}
 
 			this.game.Move(move, () => {
-				// console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
 				status = false;
 			});
 
 			this.moves_count++;
 
 			if (!status) {
-				// this.game.PrintGrid();
-
 				return {
 					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
-					moves_count: this.moves_count
+					moves_count: this.moves_count,
 				};
 			}
 		}
@@ -67,7 +62,7 @@ export class CornerTest implements ITest {
 			success: this.game.HasWon(),
 			message: `${this.name} dokončen`,
 			score: this.game.GetScore(),
-			moves_count: this.moves_count
+			moves_count: this.moves_count,
 		};
 	}
 }
