@@ -37,7 +37,7 @@ export class CornerTest implements ITest {
 				// this.game.PrintGrid();
 
 				return {
-					success: false,
+					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
 					moves_count: this.moves_count
@@ -55,7 +55,7 @@ export class CornerTest implements ITest {
 				// this.game.PrintGrid();
 
 				return {
-					success: false,
+					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
 					moves_count: this.moves_count
@@ -64,7 +64,7 @@ export class CornerTest implements ITest {
 		}
 
 		return {
-			success: true,
+			success: this.game.HasWon(),
 			message: `${this.name} dokončen`,
 			score: this.game.GetScore(),
 			moves_count: this.moves_count

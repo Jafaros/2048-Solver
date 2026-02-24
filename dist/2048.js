@@ -194,6 +194,10 @@ class Game2048 {
                 onLose?.();
             }
         };
+        // Kontrola, zda hráč vyhrál (má na mřížce číslo 2048 nebo vyšší)
+        this.HasWon = () => {
+            return this.grid.some((row) => row.some((value) => value >= 2048));
+        };
         // Kontrola, zda hráč prohrál (není možné provést žádný tah)
         this.HasLost = () => {
             return !(this.CanMove('up') ||

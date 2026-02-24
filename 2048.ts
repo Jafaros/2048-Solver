@@ -228,6 +228,11 @@ export class Game2048 {
 		}
 	};
 
+	// Kontrola, zda hráč vyhrál (má na mřížce číslo 2048 nebo vyšší)
+	public HasWon = (): boolean => {
+		return this.grid.some((row) => row.some((value) => value >= 2048));
+	};
+
 	// Kontrola, zda hráč prohrál (není možné provést žádný tah)
 	public HasLost = (): boolean => {
 		return !(

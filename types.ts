@@ -25,24 +25,22 @@ export type SpawnOutcome = {
 	x: number;
 	y: number;
 	value: 2 | 4;
-	p: number;
 };
 
 export type BaseNode = {
 	grid: Grid;
-	gameScore?: number;
-	utility?: number;
 	depth: number;
 };
 
 export type PlayerNode = BaseNode & {
 	kind: 'PLAYER';
-	nodeValue?: number;
+	value?: number;
 	children: Partial<Record<Direction, ChanceNode | null>>;
 };
 
 export type ChanceNode = BaseNode & {
 	kind: 'CHANCE';
+	value?: number;
 	causedByMove: Direction;
 	outcomes: Array<{
 		spawn: SpawnOutcome;

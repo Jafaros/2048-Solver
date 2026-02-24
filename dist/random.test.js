@@ -33,7 +33,7 @@ class RandomTest {
             if (!status) {
                 // this.game.PrintGrid();
                 return {
-                    success: false,
+                    success: this.game.HasWon(),
                     message: `${this.name} skončil`,
                     score: this.game.GetScore(),
                     moves_count: this.moves_count
@@ -41,7 +41,7 @@ class RandomTest {
             }
         }
         return {
-            success: true,
+            success: this.game.HasWon(),
             message: `${this.name} dokončen`,
             score: this.game.GetScore(),
             moves_count: this.moves_count

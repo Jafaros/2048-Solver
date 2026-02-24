@@ -25,14 +25,30 @@ class MinMaxTest {
         }
         let status = true;
         while (status) {
-            const tree = (0, tree_helper_1.BuildTree)(this.game, this.max_depth);
-            (0, tree_helper_1.PrintTree)(tree.head, '|');
+            const gameInstance = new _2048_1.Game2048(this.grid_size);
+            gameInstance.SetGrid(this.game.GetGrid());
+            const tree = (0, tree_helper_1.BuildTree)(gameInstance, this.max_depth);
+            if (tree.head)
+                (0, tree_helper_1.AssignNodeValues)(tree.head);
+            const move = (0, tree_helper_1.GetBestMove)(tree);
+            if (!move) {
+                // this.game.PrintGrid();
+                return {
+                    success: this.game.HasWon(),
+                    message: `${this.name} skončil`,
+                    score: this.game.GetScore(),
+                    moves_count: this.moves_count
+                };
+            }
+            this.game.Move(move, () => {
+                // console.log(`Konec hry! Skóre: ${this.game?.GetScore()}`);
+                status = false;
+            });
             this.moves_count++;
-            status = false;
             if (!status) {
                 // this.game.PrintGrid();
                 return {
-                    success: false,
+                    success: this.game.HasWon(),
                     message: `${this.name} skončil`,
                     score: this.game.GetScore(),
                     moves_count: this.moves_count
@@ -40,7 +56,7 @@ class MinMaxTest {
             }
         }
         return {
-            success: true,
+            success: this.game.HasWon(),
             message: `${this.name} dokončen`,
             score: this.game.GetScore(),
             moves_count: this.moves_count
