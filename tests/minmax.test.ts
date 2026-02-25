@@ -1,11 +1,16 @@
 import { Game2048 } from '../2048';
 import { AssignNodeValues, BuildTree, GetBestMove } from '../utils/tree-helper';
-import { ITest } from '../types';
+import { Direction, ITest } from '../types';
 
 export class MinMaxTest implements ITest {
 	name: string = 'MinMaxTest';
 	game: Game2048 | null = null;
-	moves_count: number = 0;
+	moves_done: Record<Direction, number> = {
+		up: 0,
+		down: 0,
+		left: 0,
+		right: 0,
+	};
 
 	constructor(
 		private grid_size: number,
@@ -38,7 +43,12 @@ export class MinMaxTest implements ITest {
 	}
 
 	Run() {
-		this.moves_count = 0; // Reset počtu tahů pro každý běh testu
+		this.moves_done = {
+			up: 0,
+			down: 0,
+			left: 0,
+			right: 0,
+		};
 
 		if (!this.game) {
 			console.error('Hra nebyla inicializována');
@@ -58,21 +68,21 @@ export class MinMaxTest implements ITest {
 					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
-					moves_count: this.moves_count,
+					moves_done: this.moves_done,
 				};
 			}
 
 			this.game.Move(move, () => {
 				status = false;
 			});
-			this.moves_count++;
+			this.moves_done[move] += 1;
 
 			if (!status) {
 				return {
 					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
-					moves_count: this.moves_count,
+					moves_done: this.moves_done,
 				};
 			}
 		}
@@ -81,7 +91,7 @@ export class MinMaxTest implements ITest {
 			success: this.game.HasWon(),
 			message: `${this.name} dokončen`,
 			score: this.game.GetScore(),
-			moves_count: this.moves_count,
+			moves_done: this.moves_done,
 		};
 	}
 }

@@ -8,7 +8,7 @@ export type Direction = 'up' | 'down' | 'left' | 'right'; // Typ pro směr pohyb
 export type TestResult = {
 	success: boolean;
 	message: string;
-	moves_count?: number;
+	moves_done?: Record<Direction, number>;
 	score?: number;
 };
 
@@ -16,7 +16,7 @@ export type TestResult = {
 export interface ITest {
 	name: string;
 	game: Game2048 | null;
-	moves_count: number;
+	moves_done: Record<Direction, number>;
 	Run(): TestResult;
 	InitiateGame(): void;
 }

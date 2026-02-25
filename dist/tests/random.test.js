@@ -7,7 +7,12 @@ class RandomTest {
         this.grid_size = grid_size;
         this.name = 'RandomTest';
         this.game = null;
-        this.moves_count = 0;
+        this.moves_done = {
+            up: 0,
+            down: 0,
+            left: 0,
+            right: 0,
+        };
         this.InitiateGame();
         console.log(`${this.name} vytvořen`);
     }
@@ -16,7 +21,12 @@ class RandomTest {
         this.game.GenerateGrid();
     }
     Run() {
-        this.moves_count = 0; // Reset počtu tahů pro každý běh testu
+        this.moves_done = {
+            up: 0,
+            down: 0,
+            left: 0,
+            right: 0,
+        };
         if (!this.game) {
             console.error('Hra nebyla inicializována');
             return { success: false, message: 'Hra nebyla inicializována' };
@@ -28,13 +38,13 @@ class RandomTest {
             this.game.Move(random_move, () => {
                 status = false;
             });
-            this.moves_count++;
+            this.moves_done[random_move] += 1;
             if (!status) {
                 return {
                     success: this.game.HasWon(),
                     message: `${this.name} skončil`,
                     score: this.game.GetScore(),
-                    moves_count: this.moves_count,
+                    moves_done: this.moves_done,
                 };
             }
         }
@@ -42,7 +52,7 @@ class RandomTest {
             success: this.game.HasWon(),
             message: `${this.name} dokončen`,
             score: this.game.GetScore(),
-            moves_count: this.moves_count,
+            moves_done: this.moves_done,
         };
     }
 }

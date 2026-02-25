@@ -9,7 +9,12 @@ class MinMaxTest {
         this.max_depth = max_depth;
         this.name = 'MinMaxTest';
         this.game = null;
-        this.moves_count = 0;
+        this.moves_done = {
+            up: 0,
+            down: 0,
+            left: 0,
+            right: 0,
+        };
         this.InitiateGame();
         console.log(`${this.name} vytvořen`);
     }
@@ -31,7 +36,12 @@ class MinMaxTest {
         return this.max_depth;
     }
     Run() {
-        this.moves_count = 0; // Reset počtu tahů pro každý běh testu
+        this.moves_done = {
+            up: 0,
+            down: 0,
+            left: 0,
+            right: 0,
+        };
         if (!this.game) {
             console.error('Hra nebyla inicializována');
             return { success: false, message: 'Hra nebyla inicializována' };
@@ -48,19 +58,19 @@ class MinMaxTest {
                     success: this.game.HasWon(),
                     message: `${this.name} skončil`,
                     score: this.game.GetScore(),
-                    moves_count: this.moves_count,
+                    moves_done: this.moves_done,
                 };
             }
             this.game.Move(move, () => {
                 status = false;
             });
-            this.moves_count++;
+            this.moves_done[move] += 1;
             if (!status) {
                 return {
                     success: this.game.HasWon(),
                     message: `${this.name} skončil`,
                     score: this.game.GetScore(),
-                    moves_count: this.moves_count,
+                    moves_done: this.moves_done,
                 };
             }
         }
@@ -68,7 +78,7 @@ class MinMaxTest {
             success: this.game.HasWon(),
             message: `${this.name} dokončen`,
             score: this.game.GetScore(),
-            moves_count: this.moves_count,
+            moves_done: this.moves_done,
         };
     }
 }

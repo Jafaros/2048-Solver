@@ -4,7 +4,12 @@ import { ITest, type Direction } from '../types';
 export class CornerTest implements ITest {
 	name: string = 'CornerTest';
 	game: Game2048 | null = null;
-	moves_count: number = 0;
+	moves_done: Record<Direction, number> = {
+		up: 0,
+		down: 0,
+		left: 0,
+		right: 0,
+	};
 
 	constructor(private grid_size: number) {
 		this.InitiateGame();
@@ -16,8 +21,24 @@ export class CornerTest implements ITest {
 		this.game.GenerateGrid();
 	}
 
+	private ShuffleDirections(directions: Array<Direction>): Array<Direction> {
+		const shuffled = [...directions];
+
+		for (let i = shuffled.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+		}
+
+		return shuffled;
+	}
+
 	Run() {
-		this.moves_count = 0; // Reset počtu tahů pro každý běh testu
+		this.moves_done = {
+			up: 0,
+			down: 0,
+			left: 0,
+			right: 0,
+		};
 
 		if (!this.game) {
 			console.error('Hra nebyla inicializována');
@@ -27,8 +48,14 @@ export class CornerTest implements ITest {
 		// Implementace logiky pro tahy, které se snaží udržet nejvyšší hodnotu v rohu
 		let status = true;
 		while (status) {
-			const preferredMoves: Array<Direction> = ['down', 'right'];
-			const fallbackMoves: Array<Direction> = ['up', 'left'];
+			const preferredMoves: Array<Direction> = this.ShuffleDirections([
+				'down',
+				'right',
+			]);
+			const fallbackMoves: Array<Direction> = this.ShuffleDirections([
+				'up',
+				'left',
+			]);
 			const move = [...preferredMoves, ...fallbackMoves].find(
 				(direction) => this.game!.CanMove(direction),
 			);
@@ -38,7 +65,7 @@ export class CornerTest implements ITest {
 					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
-					moves_count: this.moves_count,
+					moves_done: this.moves_done,
 				};
 			}
 
@@ -46,14 +73,14 @@ export class CornerTest implements ITest {
 				status = false;
 			});
 
-			this.moves_count++;
+			this.moves_done[move] += 1;
 
 			if (!status) {
 				return {
 					success: this.game.HasWon(),
 					message: `${this.name} skončil`,
 					score: this.game.GetScore(),
-					moves_count: this.moves_count,
+					moves_done: this.moves_done,
 				};
 			}
 		}
@@ -62,7 +89,7 @@ export class CornerTest implements ITest {
 			success: this.game.HasWon(),
 			message: `${this.name} dokončen`,
 			score: this.game.GetScore(),
-			moves_count: this.moves_count,
+			moves_done: this.moves_done,
 		};
 	}
 }
