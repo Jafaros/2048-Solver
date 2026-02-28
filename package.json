@@ -9,6 +9,10 @@
 		"start": "node dist/start.js"
 	},
 	"devDependencies": {
+		"@types/node": "^25.3.2",
 		"typescript": "^5.5.4"
+	},
+	"dependencies": {
+		"fs": "^0.0.1-security"
 	}
 }

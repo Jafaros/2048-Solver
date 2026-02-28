@@ -1,0 +1,23 @@
+
+		Test: MinMaxTest
+
+		Úspěšnost: 30.00%
+
+		Průměrné skóre: 1177.60
+
+		Nejvyšší skóre: 2048
+
+		Nejnižší skóre: 512
+
+		Průměrný počet tahů: 943.20
+
+		Průměrné tahy nahoru: 259.50
+
+		Průměrné tahy dolů: 220.10
+
+		Průměrné tahy doleva: 259.20
+
+		Průměrné tahy doprava: 204.40
+
+		Počet iterací: 10
+		

@@ -1,0 +1,23 @@
+
+		Test: RandomTest
+
+		Úspěšnost: 0.00%
+
+		Průměrné skóre: 108.80
+
+		Nejvyšší skóre: 256
+
+		Nejnižší skóre: 64
+
+		Průměrný počet tahů: 128.30
+
+		Průměrné tahy nahoru: 27.30
+
+		Průměrné tahy dolů: 33.20
+
+		Průměrné tahy doleva: 32.00
+
+		Průměrné tahy doprava: 35.80
+
+		Počet iterací: 10
+		

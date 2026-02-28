@@ -1,0 +1,23 @@
+
+		Test: CornerTest
+
+		Úspěšnost: 0.00%
+
+		Průměrné skóre: 211.20
+
+		Nejvyšší skóre: 512
+
+		Nejnižší skóre: 64
+
+		Průměrný počet tahů: 233.90
+
+		Průměrné tahy nahoru: 7.60
+
+		Průměrné tahy dolů: 109.30
+
+		Průměrné tahy doleva: 7.40
+
+		Průměrné tahy doprava: 109.60
+
+		Počet iterací: 10
+		

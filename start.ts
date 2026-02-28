@@ -1,5 +1,6 @@
 import { Direction, TestResult } from './types';
 import { tests } from './tests';
+import * as fs from 'fs';
 
 const ITERATIONS = 100; // Počet iterací pro každý test
 const DIRECTIONS: Direction[] = ['up', 'down', 'left', 'right']; // směry pro logování tahů
@@ -10,6 +11,7 @@ const LogResults = (testName: string, results: Array<TestResult>) => {
 	const averageScore =
 		results.reduce((sum, r) => sum + (r.score || 0), 0) / results.length;
 	const topScore = Math.max(...results.map((r) => r.score || 0));
+	const worstScore = Math.min(...results.map((r) => r.score || 0));
 
 	const directionTotals = DIRECTIONS.reduce(
 		(acc, direction) => {
@@ -36,21 +38,30 @@ const LogResults = (testName: string, results: Array<TestResult>) => {
 		{ up: 0, down: 0, left: 0, right: 0 } as Record<Direction, number>,
 	);
 
-	console.log(
-		`
+	const output = `
 		Test: ${testName}\n
 		Úspěšnost: ${((successCount / results.length) * 100).toFixed(2)}%\n
 		Průměrné skóre: ${averageScore.toFixed(2)}\n
 		Nejvyšší skóre: ${topScore}\n
+		Nejnižší skóre: ${worstScore}\n
 		Průměrný počet tahů: ${averageMoves.toFixed(2)}\n
 		Průměrné tahy nahoru: ${averageMovesByDirection.up.toFixed(2)}\n
 		Průměrné tahy dolů: ${averageMovesByDirection.down.toFixed(2)}\n
 		Průměrné tahy doleva: ${averageMovesByDirection.left.toFixed(2)}\n
 		Průměrné tahy doprava: ${averageMovesByDirection.right.toFixed(2)}\n
 		Počet iterací: ${results.length}
-		`,
-	);
+		`;
+
+	console.log(output);
+	SaveResultsToFile(testName, output, results.length);
 };
+
+// Funkce pro uložení výsledků do souboru
+function SaveResultsToFile(testName: string, text: string, iterations: number) {
+	const path = `results/result_${testName}_${iterations}.txt`;
+	fs.writeFileSync(path, text);
+	console.log(`Výsledky uloženy do souboru: ${path}`);
+}
 
 // Spuštění všech testů a logování výsledků
 for (const test of tests) {
