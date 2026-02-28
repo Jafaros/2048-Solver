@@ -4,12 +4,6 @@
 
 Tento dokument obsahuje výsledky testování a analýzy algoritmu řešitele hry 2048 s velikostí hracího pole 4×4. MinMax test byl prováděn pouze s maximální hloubkou zanoření 5.
 
-Celý projekt lze spustit v konzoli přes:
-`npm install`
-
-a následně:
-`npm start`
-
 ## Výsledky strategií
 
 ### 10 iterací

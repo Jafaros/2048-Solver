@@ -1,7 +1,7 @@
 # 2048-Solver
 
-Lze spustit příkazem v konzoli
+Celý projekt lze spustit v konzoli přes:
+`npm install`
 
-```cmd
-npm start
-```
+a následně:
+`npm start`
